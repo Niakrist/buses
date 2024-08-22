@@ -4,7 +4,6 @@ import path from "path";
 import { DateTime } from "luxon";
 
 const __dirname = import.meta.dirname;
-
 const PORT = 5000;
 const TIME_ZONE = "UTC+3";
 
@@ -73,10 +72,12 @@ app.get("/next-departure", async (req, res) => {
   try {
     const updateBuses = await sendUpdateData();
 
+    // Сортировка по времени
     const sortedTimeBuses = updateBuses.sort((a, b) => {
       return a.nextDeparture.time.localeCompare(b.nextDeparture.time);
     });
 
+    // Сортировка по дате
     const sortedDateBuses = sortedTimeBuses.sort((a, b) => {
       return a.nextDeparture.date.localeCompare(b.nextDeparture.date);
     });
