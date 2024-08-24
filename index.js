@@ -9,6 +9,8 @@ const TIME_ZONE = "UTC+3";
 
 const app = express();
 
+app.use(express.static(path.resolve(__dirname, "public")));
+
 const loadBuses = async () => {
   const data = await readFile(path.resolve(__dirname, "buses.json"), "utf-8");
   return JSON.parse(data);
@@ -60,7 +62,7 @@ const sendUpdateData = async () => {
       ...bus,
       nextDeparture: {
         date: nextDeparture.toFormat("yyyy-MM-dd"),
-        time: nextDeparture.toFormat("HH:mm:ss"),
+        time: nextDeparture.toFormat("HH:mm"),
       },
     };
   });
