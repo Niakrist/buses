@@ -41,7 +41,7 @@ const renderhBusData = async (data) => {
     nextDepartureTime.textContent = formatTime(nextDepartureDateTimeUTC);
 
     const frequencyMinutes = document.createElement("td");
-    frequencyMinutes.textContent = bus.frequencyMinutes;
+    frequencyMinutes.textContent = bus.nextDeparture.remaining;
 
     tr.append(
       busNumber,
@@ -81,10 +81,28 @@ const getCurrentTime = () => {
   }, 1000);
 };
 
+const initWebSoket = () => {
+  const ws = new WebSocket(`ws://${location.host}`);
+  ws.addEventListener("open", () => {
+    console.log("Websoket connection");
+  });
+  ws.addEventListener("message", (event) => {
+    const busees = JSON.parse(event.data);
+    renderhBusData(busees);
+  });
+  ws.addEventListener("error", (erorr) => {
+    console.log(`Websoket error: ${erorr}`);
+  });
+  ws.addEventListener("close", () => {
+    console.log("Websoket close");
+  });
+};
+
 const init = async () => {
   const data = await fetchBusData();
   renderhBusData(data);
   getCurrentTime();
+  initWebSoket();
 };
 
 init();

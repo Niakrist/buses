@@ -13,6 +13,7 @@
   "dependencies": {
     "express": "^4.19.2",
     "luxon": "^3.5.0",
-    "nodemon": "^3.1.4"
+    "nodemon": "^3.1.4",
+    "ws": "^8.18.0"
   }
 }
