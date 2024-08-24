@@ -41,7 +41,11 @@ const renderhBusData = async (data) => {
     nextDepartureTime.textContent = formatTime(nextDepartureDateTimeUTC);
 
     const frequencyMinutes = document.createElement("td");
-    frequencyMinutes.textContent = bus.nextDeparture.remaining;
+
+    frequencyMinutes.textContent =
+      bus.nextDeparture.remaining < "00:01:00"
+        ? "Идет посадка"
+        : bus.nextDeparture.remaining;
 
     tr.append(
       busNumber,
@@ -53,7 +57,6 @@ const renderhBusData = async (data) => {
 
     return tr;
   });
-
   busTBody.append(...buses);
 };
 
@@ -82,7 +85,7 @@ const getCurrentTime = () => {
 };
 
 const initWebSoket = () => {
-  const ws = new WebSocket(`ws://${location.host}`);
+  const ws = new WebSocket(`wss://${location.host}`);
   ws.addEventListener("open", () => {
     console.log("Websoket connection");
   });
